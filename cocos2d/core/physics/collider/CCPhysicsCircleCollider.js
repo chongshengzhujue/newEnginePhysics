@@ -47,8 +47,8 @@ var PhysicsCircleCollider = cc.Class({
         var offsetY = this.offset.y/PTM_RATIO * scaleY;
 
         var shape = new b2.CircleShape();
-        shape.m_radius = this.radius / PTM_RATIO * scaleX;
-        shape.m_p = new b2.Vec2(offsetX, offsetY);
+        shape.radius = this.radius / PTM_RATIO * scaleX;
+        shape.position = new b2.Vec2(offsetX, offsetY);
 
         return shape;
     }

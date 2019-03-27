@@ -100,7 +100,6 @@ exports.jsbPolyfill = function (sourceFile, outputFile) {
         prefix: function () {
             var prefix = 'CC_DEV = true;\n';
             prefix += 'CC_JSB = true;\n';
-
             return prefix;
         },
         skips: Engine.jsbSkipModules

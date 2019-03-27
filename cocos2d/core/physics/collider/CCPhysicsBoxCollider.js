@@ -49,7 +49,7 @@ var PhysicsBoxCollider = cc.Class({
         var offsetY = this.offset.y/PTM_RATIO *scaleY;
 
         var shape = new b2.PolygonShape();
-        shape.SetAsBox(width, height, new b2.Vec2(offsetX, offsetY), 0);
+        shape.SetAsBoxXYCenterAngle(width, height, new b2.Vec2(offsetX, offsetY), 0);
         return shape;
     }
 });

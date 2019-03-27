@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
- 
+let CC_PHY_JSB = false;
 var PTM_RATIO = require('../CCPhysicsTypes').PTM_RATIO;
 var getWorldScale = require('../utils').getWorldScale;
 
@@ -200,7 +200,7 @@ var PhysicsCollider = cc.Class({
 
             fixDef.filter = filter;
 
-            var fixture = innerBody.CreateFixture(fixDef);
+            var fixture = innerBody.CreateFixtureFromDef(fixDef);
             fixture.collider = this;
 
             if (body.enabledContactListener) {
@@ -227,7 +227,7 @@ var PhysicsCollider = cc.Class({
             var fixture = fixtures[i];
             fixture.collider = null;
 
-            if (CC_JSB) {
+            if (CC_PHY_JSB) {
                 if (cc.sys.isObjectValid(fixture)) {
                     manager._unregisterContactFixture(fixture);
                 }

@@ -76,7 +76,8 @@ var PhysicsPolygonCollider = cc.Class({
                 }
 
                 if (vertices.length === b2.maxPolygonVertices) {
-                    shape.Set(vertices, vertices.length);
+                    // shape.Set(vertices, vertices.length);
+                    shape.vertices = vertices;
                     shapes.push(shape);
 
                     shape = null;
@@ -88,7 +89,8 @@ var PhysicsPolygonCollider = cc.Class({
             }
 
             if (shape) {
-                shape.Set(vertices, vertices.length);
+                shape.vertices = vertices;
+                // shape.Set(vertices, vertices.length);
                 shapes.push(shape);
             }
         }

@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
+let CC_PHY_JSB = false;
 var PTM_RATIO = require('./CCPhysicsTypes').PTM_RATIO;
 var ANGLE_TO_PHYSICS_ANGLE = require('./CCPhysicsTypes').ANGLE_TO_PHYSICS_ANGLE;
 var PHYSICS_ANGLE_TO_ANGLE = require('./CCPhysicsTypes').PHYSICS_ANGLE_TO_ANGLE;
@@ -309,7 +309,7 @@ var RigidBody = cc.Class({
                 this._linearVelocity = value;
                 var b2body = this._b2Body;
                 if (b2body) {
-                    var temp = CC_JSB ? tempb2Vec21 : b2body.m_linearVelocity;
+                    var temp = CC_PHY_JSB ? tempb2Vec21 : b2body.GetLinearVelocity();
                     temp.Set(value.x/PTM_RATIO, value.y/PTM_RATIO);
                     b2body.SetLinearVelocity(temp);
                 }
@@ -624,7 +624,7 @@ var RigidBody = cc.Class({
     getJointList: function () {
         if (!this._b2Body) return [];
 
-        if (CC_JSB) {
+        if (CC_PHY_JSB) {
             var joints = this._b2Body.GetJointList();
             for (var i = 0; i < joints.length; i++) {
                 joints[i] = joints[i]._joint;
@@ -762,7 +762,7 @@ var RigidBody = cc.Class({
         var pos = this.node.convertToWorldSpaceAR(VEC2_ZERO);
 
         var temp;
-        if (CC_JSB) {
+        if (CC_PHY_JSB) {
             temp = tempb2Vec21;
         }
         else if (this.type === BodyType.Animated) {
@@ -820,7 +820,7 @@ var RigidBody = cc.Class({
         var b2body = this._b2Body;
         if (!b2body) return;
 
-        var temp = CC_JSB ? tempb2Vec21 : b2body.m_linearVelocity;
+        var temp = CC_PHY_JSB ? tempb2Vec21 : b2body.GetLinearVelocity();
         temp.Set(0, 0);
 
         b2body.SetLinearVelocity(temp);

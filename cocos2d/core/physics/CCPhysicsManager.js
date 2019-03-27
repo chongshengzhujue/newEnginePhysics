@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
+let CC_PHY_JSB = false;
 var ContactType = require('./CCPhysicsTypes').ContactType;
 var BodyType = require('./CCPhysicsTypes').BodyType;
 var RayCastType = require('./CCPhysicsTypes').RayCastType;
@@ -206,7 +206,7 @@ var PhysicsManager = cc.Class({
         }
         
 
-        world.DrawDebugData();
+        // world.DrawDebugData();
 
         this._steping = false;
 
@@ -404,7 +404,7 @@ var PhysicsManager = cc.Class({
 
         body._b2Body = world.CreateBody(bodyDef);
 
-        if (CC_JSB) {
+        if (CC_PHY_JSB) {
             body._b2Body.SetUserData( node._sgNode );
         }
 
@@ -418,7 +418,7 @@ var PhysicsManager = cc.Class({
         var world = this._world;
         if (!world) return;
 
-        if (CC_JSB) {
+        if (CC_PHY_JSB) {
             body._b2Body.SetUserData(null);
         }
         body._b2Body.body = null;
@@ -469,7 +469,7 @@ var PhysicsManager = cc.Class({
         var bodies = this._bodies;
         for (var i = 0, l = bodies.length; i < l; i++) {
             var body = bodies[i];
-            if (CC_JSB) {
+            if (CC_PHY_JSB) {
                 var node = body.node;
                 node._position.x = node._sgNode.getPositionX();
                 node._position.y = node._sgNode.getPositionY();
@@ -537,7 +537,7 @@ cc.js.getset(PhysicsManager.prototype, 'enabled',
     },
     function (value) {
         if (value && !this._world) {
-            var world = new b2.World( new b2.Vec2(0, -10) );
+            window["world"] = new b2.World( new b2.Vec2(0, -10) );
             world.SetAllowSleeping(true);
 
             this._world = world;
