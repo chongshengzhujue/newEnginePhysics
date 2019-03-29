@@ -56931,21 +56931,21 @@ function b2BodyDef() {
 };
 b2World.BeginContactBody = function(contactPtr) {
     if (world.listener.BeginContactBody === undefined) return;
-    var contact = new b2Contact(contactPtr);
+    var contact = getB2Contact(contactPtr);
     world.listener.BeginContactBody(contact)
 };
 b2World.EndContactBody = function(contactPtr) {
     if (world.listener.EndContactBody === undefined) return;
-    var contact = new b2Contact(contactPtr);
+    var contact = getB2Contact(contactPtr);
     world.listener.EndContactBody(contact)
 };
 b2World.PreSolve = function(contactPtr, oldManifoldPtr) {
     if (world.listener.PreSolve === undefined) return;
-    world.listener.PreSolve(new b2Contact(contactPtr), new b2Manifold(oldManifoldPtr))
+    world.listener.PreSolve(getB2Contact(contactPtr), new b2Manifold(oldManifoldPtr))
 };
 b2World.PostSolve = function(contactPtr, impulsePtr) {
     if (world.listener.PostSolve === undefined) return;
-    world.listener.PostSolve(new b2Contact(contactPtr), new b2ContactImpulse(impulsePtr))
+    world.listener.PostSolve(getB2Contact(contactPtr), new b2ContactImpulse(impulsePtr))
 };
 b2World.QueryAABB = function(fixturePtr) {
     return world.queryAABBCallback.ReportFixture(world.fixturesLookup[fixturePtr])
@@ -57520,9 +57520,23 @@ var b2Contact_tangentSpeed_offset = Offsets.b2Contact.tangentSpeed;
 var b2Contact_GetManifold = Module.cwrap("b2Contact_GetManifold", "number", ["number"]);
 var b2Contact_GetWorldManifold = Module.cwrap("b2Contact_GetWorldManifold", "number", ["number"]);
 
+var b2ContactPool = {};
+
+function getB2Contact(ptr) {
+    var contact = b2ContactPool[ptr];
+    if (contact) {
+        contact.buffer = new DataView(Module.HEAPU8.buffer, ptr);
+        contact.ptr = ptr;
+    } else {
+        contact = new b2Contact(ptr);
+    }
+    return contact;
+}
+
 function b2Contact(ptr) {
     this.buffer = new DataView(Module.HEAPU8.buffer, ptr);
     this.ptr = ptr
+    b2ContactPool[ptr] = this;
 }
 b2Contact.prototype.GetFixtureA = function() {
     var fixAPtr = this.buffer.getUint32(b2Contact_fixtureA_offset, true);
@@ -57849,6 +57863,11 @@ b2Draw.e_frictionImpulses = 128;
 b2Draw.e_statistics = 256;
 b2Draw.e_profile = 512;
 b2Draw.e_pairBit = 1024;
+
+b2Contact.prototype.setTangentSpeed = b2Contact.prototype.SetTangentSpeed;
+b2Body.prototype.applyLinearImpulse = b2Body.prototype.ApplyLinearImpulse;
+b2Body.prototype.getWorldCenter = b2Body.prototype.GetWorldCenter;
+b2Body.prototype.getMass = b2Body.prototype.GetMass;
 
 
 var mappings = [{

@@ -19,7 +19,7 @@ PhysicsContactListener.prototype.setPostSolve = function (cb) {
     this._PostSolve = cb;
 };
 
-PhysicsContactListener.prototype.BeginContact = function (contact) {
+PhysicsContactListener.prototype.BeginContactBody = function (contact) {
     if (!this._BeginContact) return;
 
     var fixtureA = contact.GetFixtureA();
@@ -34,7 +34,7 @@ PhysicsContactListener.prototype.BeginContact = function (contact) {
     }
 };
 
-PhysicsContactListener.prototype.EndContact = function (contact) {
+PhysicsContactListener.prototype.EndContactBody = function (contact) {
     if (this._EndContact && contact._shouldReport) {
         contact._shouldReport = false;
         this._EndContact(contact);
