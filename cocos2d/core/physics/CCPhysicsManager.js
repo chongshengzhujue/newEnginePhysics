@@ -206,7 +206,7 @@ var PhysicsManager = cc.Class({
         }
         
 
-        // world.DrawDebugData();
+        world.DrawDebugData();
 
         this._steping = false;
 
